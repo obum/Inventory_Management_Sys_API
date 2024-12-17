@@ -18,14 +18,15 @@ Develop an API to manage inventory for a store where authenticated users can add
 - Detailed error handling and validation.
 
 4.[Endpoints] (#endpoints)
-    >  POST api/users/token/  Authenticate user and issue a token.
-    >  POST api/users/register/ Register new users by providing their details.
-    >  GET api/users/profile/ To retrieve a user profile (Authentication required)
-    >  GET api/users/ : List all users. (Admin only)
-    >  POST api/users/ : Add a new user. (Admin only)
-    >  GET api/users/{id}/ : Retrieve details of a specific user. (Admin only)
-    >  PUT/PATCH api/users/{id}/ : Update user details. (Admin only)
-    >  DELETE api/users/{id}/ : Delete a specific user. (Admin only)
+
+    > ` POST api/users/token/` : Authenticate user and issue a token.
+    >  `POST api/users/register/`: Register new users by providing their details.
+    >  `GET api/users/profile/`: To retrieve a user profile (Authentication required)
+    >  `GET api/users/ `: List all users. (Admin only)
+    >  `POST api/users/` : Add a new user. (Admin only)
+    >  `GET api/users/{id}/` : Retrieve details of a specific user. (Admin only)
+    >  `PUT/PATCH api/users/{id}/` : Update user details. (Admin only)
+    >  `DELETE api/users/{id}/` : Delete a specific user. (Admin only)
 5.[Usage] (#usage)
 
 ---
