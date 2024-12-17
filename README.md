@@ -4,7 +4,7 @@ Develop an API to manage inventory for a store where authenticated users can add
 
 ---
 
-## Table of Contents
+## Project Blueprint
 
 1. [Dependencies] (#Installation and Dependencies)
 
