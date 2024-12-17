@@ -13,7 +13,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = '__all__'
+        fields =  '__all__'
         read_only_fields = ['created_at', 'updated_at']
         
     # Validate the email field to ensure uniqueness  
@@ -28,13 +28,22 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             raise ValidationError(f'{value} already taken')
         return value
     
+    def validate_role(self, attrs):
+        if attrs not in [choice[0] for choice in User.Roles.choices]:
+            raise serializers.ValidationError(f'Invaid role {attrs}')
+        return attrs
+    
     # Create a User 
     def create(self, validated_data: dict):
+        
+        
         
         # Extract the password field from the validated data
         password = validated_data.pop('password')
         # Use the User model's manager to create a user instance
         user = User.objects.create_user(**validated_data)
+        
+        
         # Set the password for the user instance (hashing it securely)
         user.set_password(password)
         # Save the user instance to the database
@@ -65,13 +74,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'refresh_token': user_tokens['refresh'],
             'access_token': user_tokens['access']
         }
-     
+        
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only= True)
     
     class Meta:
         model = User
-        fields = ['__all__']
+        fields =  '__all__'
         read_only_fields = ['created_at', 'updated_at']
         
     def update(self, instance, validated_data:dict):

@@ -14,13 +14,16 @@ class UserManager(BaseUserManager):
         # creates an instance of the user model in memory
         user: AbstractUser = self.model(
             email = email,
-            username = username
+            username = username,
+            role= role
         )
         user.set_password(password)
         user.save(using=self._db)
         
-        if role == 'Admin':
+        if role == User.Roles.ADMIN:
             user.is_staff = True
+            user.is_superuser = True
+            # user.role = User.Roles.ADMIN
         
         return user
         
@@ -35,7 +38,7 @@ class UserManager(BaseUserManager):
             username,
             password=password
             )
-        
+        user.role = User.Roles.ADMIN 
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)

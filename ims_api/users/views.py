@@ -13,11 +13,15 @@ class UserDetailUpdateView(RetrieveUpdateAPIView):
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
     
-    def get_queryset(self):
-        # Ensure that loogin user can only retrieve and update its own data
-        logged_in_user = self.request.user
-        queryset = User.objects.filter(id=logged_in_user.id)
-        return queryset
+    def get_object(self):
+        # Return the currently logged-in user
+        return self.request.user
+    
+    # def get_queryset(self):
+    #     # Ensure that loogin user can only retrieve and update its own data
+    #     logged_in_user = self.request.user
+    #     queryset = User.objects.filter(id=logged_in_user.id)
+    #     return queryset
     
 class UserAllDetailUpdateView(RetrieveUpdateDestroyAPIView): # This view wxpwcts a pk and as such cannot handle retrieving all users
     serializer_class = UserSerializer
