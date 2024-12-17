@@ -87,6 +87,6 @@ Develop an API to manage inventory for a store where authenticated users can add
 
   ---
 
-## Prvious Project Github Repo
+## Previous Project Github Repo
 
  https://github.com/obum/Alx_DjangoLearnLab.git
