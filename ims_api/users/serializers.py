@@ -7,14 +7,21 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # Use a dedicated Serializer for user creation
 User = get_user_model()
+required_fields = ['username', 'email', 'role','password']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     
     class Meta:
         model = User
-        fields =  '__all__'
-        read_only_fields = ['created_at', 'updated_at']
+        fields =  ['id', 'username', 'email', 'role','password', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def validate(self, attrs):
+        missing_field = [field for field in required_fields if field not in attrs]
+        if missing_field:
+            raise ValidationError(f'{missing_field[0]} was not provided')
+        return attrs
         
     # Validate the email field to ensure uniqueness  
     def validate_email(self, value):  
@@ -70,7 +77,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user_data = super().to_representation(instance)
         user_tokens = self.get_tokens_for_user(instance)
         return {
-            'user_info': user_data,
+            'user_info': {
+                'id': user_data['id'],
+                'username': user_data['username'],
+                'email': user_data['email'],
+                'role': user_data['role'],
+                'creation date': user_data['created_at'],
+                'last update': user_data['updated_at'],                
+                },
             'refresh_token': user_tokens['refresh'],
             'access_token': user_tokens['access']
         }
@@ -97,3 +111,20 @@ class UserSerializer(serializers.ModelSerializer):
             
         instance.save()
         return instance
+    
+    def to_representation(self, instance):
+        """
+        Format the response using the UserSerializer and include the token.
+        """
+        user_data = super().to_representation(instance)
+
+        return {
+            'user_info': {
+                'id': user_data['id'],
+                'username': user_data['username'],
+                'email': user_data['email'],
+                'role': user_data['role'],
+                'creation date': user_data['created_at'],
+                'last update': user_data['updated_at'],                
+                }
+            }

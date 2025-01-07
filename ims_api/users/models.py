@@ -28,17 +28,16 @@ class UserManager(BaseUserManager):
         return user
         
         
-    def createsuperuser(self, email, username, password=None):
+    def create_superuser(self, email, username, password=None, role=None):
         """
-        Creates and saves a superuser with the given email, date of
-        birth and password.
+        Creates and saves a superuser with the given email, role and password.
         """
         user = self.create_user(
             email,
             username,
+            role=User.Roles.ADMIN,
             password=password
             )
-        user.role = User.Roles.ADMIN 
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
@@ -63,6 +62,6 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
     
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email']
     
     objects = UserManager()
