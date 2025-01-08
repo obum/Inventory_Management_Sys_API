@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
-from .serializers import CategorySerializer, InventoryChangeSerializer, InventoryItemSerializer
-from .models import Category, InventoryChange, InventoryItem
+from .serializers import CategorySerializer, ChangeReasonSerializer, InventoryChangeSerializer, InventoryItemSerializer
+from .models import Category, ChangeReason, InventoryChange, InventoryItem
 from rest_framework import permissions, generics, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -24,6 +24,11 @@ class ItemFilter(filter.FilterSet):
 class CategoryView(ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+class ChangeReasonView(ModelViewSet):
+    serializer_class = ChangeReasonSerializer
+    queryset = ChangeReason.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
 class InventoryItemViewset(ModelViewSet):
@@ -93,4 +98,4 @@ class InventoryChangeViewSet(ModelViewSet):
             },
             status=status.HTTP_200_OK
         )
- 
+

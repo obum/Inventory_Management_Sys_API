@@ -1,10 +1,15 @@
 from rest_framework import serializers
 from .models import InventoryChange, InventoryItem, Category
-from .models import Category, InventoryItem
+from .models import Category, InventoryItem, ChangeReason
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        fields = '__all__'
+
+class ChangeReasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChangeReason
         fields = '__all__'
 
 class InventoryItemSerializer(serializers.ModelSerializer): 

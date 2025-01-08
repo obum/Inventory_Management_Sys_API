@@ -1,12 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CategoryView, InventoryChangeViewSet, InventoryItemViewset, InventoryLevelView
+from .views import CategoryView, ChangeReasonView, InventoryChangeViewSet, InventoryItemViewset, InventoryLevelView
 
 app_name = 'inventory'
 
 router = DefaultRouter()
 router.register(r'category', CategoryView, basename='category')
 router.register(r'changes', InventoryChangeViewSet, basename='inventory-change')
+router.register(r'changereasons', ChangeReasonView, basename='change-reason')
 router.register(r'', InventoryItemViewset, basename='inventory')
 
 
