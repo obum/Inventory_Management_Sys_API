@@ -7,7 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # Use a dedicated Serializer for user creation
 User = get_user_model()
-required_fields = ['username', 'email', 'role','password']
+required_fields = ['username', 'email', 'password']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -16,6 +16,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         model = User
         fields =  ['id', 'username', 'email', 'role','password', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
+    
+        
+    role = serializers.ChoiceField(choices=User.Roles.choices, required=False)  # Make 'role' optional
 
     def validate(self, attrs):
         missing_field = [field for field in required_fields if field not in attrs]
@@ -41,15 +44,18 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return attrs
     
     # Create a User 
-    def create(self, validated_data: dict):
-        
-        
-        
+    def create(self, validated_data: dict):    
         # Extract the password field from the validated data
         password = validated_data.pop('password')
-        # Use the User model's manager to create a user instance
-        user = User.objects.create_user(**validated_data)
         
+        # If 'role' is not provided, set it to the default value (STOREKEEPER)
+        role = validated_data.get('role', User.Roles.STOREKEEPER)
+                
+        # Use the User model's manager to create a user instance
+        user = User.objects.create_user(
+            **validated_data,
+            role=role
+            )
         
         # Set the password for the user instance (hashing it securely)
         user.set_password(password)
@@ -96,6 +102,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields =  '__all__'
         read_only_fields = ['created_at', 'updated_at']
+      
+    role = serializers.ChoiceField(choices=User.Roles.choices, required=False)  # Make 'role' optional
         
     def update(self, instance, validated_data:dict):
         instance = super().update(instance, validated_data)

@@ -5,9 +5,9 @@ from .views import CategoryView, InventoryChangeViewSet, InventoryItemViewset, I
 app_name = 'inventory'
 
 router = DefaultRouter()
-router.register(r'', InventoryItemViewset, basename='inventory')
 router.register(r'category', CategoryView, basename='category')
 router.register(r'changes', InventoryChangeViewSet, basename='inventory-change')
+router.register(r'', InventoryItemViewset, basename='inventory')
 
 
 urlpatterns = [

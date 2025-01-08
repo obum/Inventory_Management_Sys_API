@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from .permissions import IsOwnerorReadonly
 from django_filters import rest_framework as filter
+from rest_framework.exceptions import PermissionDenied
 # Create your views here.
 
 User = get_user_model()
@@ -34,10 +35,6 @@ class InventoryItemViewset(ModelViewSet):
     filterset_class = ItemFilter
     ordering_fields = ['name', 'quantity', 'price', 'created_at']
 
-    # def get_queryset(self):
-    #     # Ensure that logged_in_users can only access their own inventory items
-    #     queryset = InventoryItem.objects.filter(owner=self.request.user)
-    #     return queryset   
 
 class InventoryLevelView(generics.ListAPIView):
     permission_classes = [IsOwnerorReadonly]
@@ -71,10 +68,13 @@ class InventoryChangeViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = InventoryChangeSerializer
     queryset = InventoryChange.objects.all()
+    http_method_names = ['get', 'post'] # only alow get and post methods
 
     # Upon creation set the logged_in user as the changed_by value
     def perform_create(self, serializer):
         serializer.save(changed_by=self.request.user)
+    
+
 
     # Define a custom action to display all changes on an item
     @action(methods=['get'], detail=True, url_path='history', url_name='inventory_change_history')

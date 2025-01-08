@@ -20,14 +20,9 @@ class UserDetailUpdateView(RetrieveUpdateAPIView):
     def get_object(self):
         # Return the currently logged-in userP
         return self.request.user
+   
     
-    # def get_queryset(self):
-    #     # Ensure that loogin user can only retrieve and update its own data
-    #     logged_in_user = self.request.user
-    #     queryset = User.objects.filter(id=logged_in_user.id)
-    #     return queryset
-    
-class UserAllDetailUpdateView(RetrieveUpdateDestroyAPIView): # This view wxpwcts a pk and as such cannot handle retrieving all users
+class UserAllDetailUpdateView(RetrieveUpdateDestroyAPIView): # This view expwcts a pk and as such cannot handle retrieving all users
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [IsAdminUser]
@@ -49,7 +44,7 @@ class UserLogoutView(DestroyAPIView):
         # validate the referesh_token parsed
         if not refresh_token:
             return Response(
-                {"detail": "Refresh tken required."},
+                {"detail": "Refresh token required."},
                 status= status.HTTP_400_BAD_REQUEST
             )
         try:

@@ -6,11 +6,16 @@ from django.utils import timezone
 class UserManager(BaseUserManager):
     # defines the methods for creating users
     
-    def create_user(self, email, username, role, password=None):
+    def create_user(self, email, username, role=None, password=None):
         if not (email and username):
             raise ValueError("Users must have an email address and username")
         
         email=self.normalize_email(email) # normalize the email 
+        
+        # If no role is provided, default to 'STOREKEEPER'
+        if role is None:
+            role = User.Roles.STOREKEEPER
+        
         # creates an instance of the user model in memory
         user: AbstractUser = self.model(
             email = email,
@@ -56,6 +61,7 @@ class User(AbstractUser):
         max_length=12,
         choices=Roles.choices,
         default=Roles.STOREKEEPER,
+        blank=True
     )
  
     created_at = models.DateTimeField(auto_now_add=True)
