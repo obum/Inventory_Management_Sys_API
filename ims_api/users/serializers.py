@@ -3,7 +3,7 @@ from django.forms import ValidationError
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rest_framework.exceptions import PermissionDenied
 
 # Use a dedicated Serializer for user creation
 User = get_user_model()
@@ -101,9 +101,15 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields =  '__all__'
-        read_only_fields = ['id', 'role', 'created_at', 'updated_at']
+        read_only_fields = ['id',  'created_at', 'updated_at']
         
     def update(self, instance, validated_data:dict):
+        
+        if 'role' in validated_data:      
+            logged_in_user = self.context['request'].user
+            if logged_in_user.role != 'ADMIN':
+                raise PermissionDenied("Only admins can change the role of a user.")
+        
         instance = super().update(instance, validated_data)
         for key, value in validated_data.items():
             if key != 'password':
@@ -116,6 +122,7 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password) 
             
         instance.save()
+        
         return instance
     
     def to_representation(self, instance):
