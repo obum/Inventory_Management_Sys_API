@@ -101,9 +101,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields =  '__all__'
-        read_only_fields = ['id', 'role','created_at', 'updated_at']
-      
-    role = serializers.ChoiceField(choices=User.Roles.choices, required=False)  # Make 'role' optional
+        read_only_fields = ['id', 'role', 'created_at', 'updated_at']
         
     def update(self, instance, validated_data:dict):
         instance = super().update(instance, validated_data)
