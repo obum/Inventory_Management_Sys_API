@@ -20,8 +20,7 @@ class UserDetailUpdateView(RetrieveUpdateAPIView):
     def get_object(self):
         # Return the currently logged-in userP
         return self.request.user
-   
-    
+      
 class UserAllDetailUpdateView(RetrieveUpdateDestroyAPIView): # This view expwcts a pk and as such cannot handle retrieving all users
     serializer_class = UserSerializer
     queryset = User.objects.all()

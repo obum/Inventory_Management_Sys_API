@@ -19,7 +19,7 @@ class ItemFilter(filter.FilterSet):
 
     class Meta:
         model = InventoryItem
-        fields = ['category', 'max_price', 'min_price', 'low_stock']
+        fields = ['id', 'category', 'max_price', 'min_price', 'low_stock']
 
 class CategoryView(ModelViewSet):
     serializer_class = CategorySerializer
@@ -34,7 +34,6 @@ class InventoryItemViewset(ModelViewSet):
     filter_backends = (filter.DjangoFilterBackend, filters.OrderingFilter) # Add sorting functionality
     filterset_class = ItemFilter
     ordering_fields = ['name', 'quantity', 'price', 'created_at']
-
 
 class InventoryLevelView(generics.ListAPIView):
     permission_classes = [IsOwnerorReadonly]
