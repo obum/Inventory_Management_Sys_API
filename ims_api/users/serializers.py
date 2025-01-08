@@ -101,7 +101,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields =  '__all__'
-        read_only_fields = ['created_at', 'updated_at']
+        read_only_fields = ['id', 'role','created_at', 'updated_at']
       
     role = serializers.ChoiceField(choices=User.Roles.choices, required=False)  # Make 'role' optional
         
