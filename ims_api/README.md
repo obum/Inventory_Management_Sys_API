@@ -1,6 +1,6 @@
 # Inventory_Management_Sys_API
 
-Develop an API to manage inventory for a store where authenticated users can add, update, and delete inventory items, and view inventory levels.
+Develope an API to manage inventory for a store where authenticated users can add, update, and delete inventory items, and view inventory levels.
 
 ---
 
