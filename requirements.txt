@@ -3,3 +3,4 @@ djangorestframework
 rest_framework-simplejwt
 mysqlclient
 django-filter
+drf-spectacular
